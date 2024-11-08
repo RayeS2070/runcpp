@@ -27,17 +27,4 @@ target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC stdc++exp)
 
-target_link_options(${PROJECT_NAME} PUBLIC -fsanitize=address,undefined)
-target_compile_options(${PROJECT_NAME} PUBLIC -fsanitize=address,undefined)
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_link_options(${PROJECT_NAME} PUBLIC -static-libsan)
-    target_compile_options(${PROJECT_NAME} PUBLIC -static-libsan)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_link_libraries(${PROJECT_NAME} PUBLIC asan ubsan)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-    # using Intel C++
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    # using Visual Studio C++
-endif()
-
+sanitize(${PROJECT_NAME} "addr,ub")
