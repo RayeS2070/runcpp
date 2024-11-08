@@ -1,0 +1,13 @@
+# IDE
+.idea
+.kdev4
+.vscode
+
+# Build
+Build
+build
+build_*
+
+# Clangd
+.cache
+compile_commands.json
