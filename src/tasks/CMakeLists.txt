@@ -1,0 +1,4 @@
+add_subdirectory(max_subsequence)
+add_subdirectory(fibonacci)
+add_subdirectory(manacher)
+add_subdirectory(smallestklen)

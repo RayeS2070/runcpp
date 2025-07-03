@@ -2,57 +2,144 @@
     "version": 6,
     "configurePresets": [
         {
-            "name": "gcc_debug",
-            "displayName": "GCC Debug",
-            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
-            "binaryDir": "${sourceDir}/build/${presetName}",
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
-                "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-                "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "CMAKE_CXX_EXTENSIONS": false
             }
         },
         {
-            "name": "gcc_release",
-            "displayName": "GCC Release",
-            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
-            "binaryDir": "${sourceDir}/build/${presetName}",
+            "name": "debug",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "binaryDir": "${sourceDir}/build_debug/${presetName}",
             "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "inherits": [
+                "base"
+            ],
+            "hidden": true,
+            "binaryDir": "${sourceDir}/build_release/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "gcc",
+            "hidden": true,
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "cacheVariables": {
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-                "CMAKE_CXX_EXTENSIONS": false
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
+            }
+        },
+        {
+            "name": "gcc_debug",
+            "displayName": "gcc-debug",
+            "inherits": [
+                "gcc",
+                "debug"
+            ]
+        },
+        {
+            "name": "gcc_release",
+            "displayName": "gcc-release",
+            "inherits": [
+                "gcc",
+                "release"
+            ]
+        },
+        {
+            "name": "gcc_13",
+            "inherits": "base",
+            "hidden": true,
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/gcc-13",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++-13"
+            }
+        },
+        {
+            "name": "gcc_13_debug",
+            "displayName": "gcc-13-debug",
+            "inherits": "gcc_13",
+            "binaryDir": "${sourceDir}/build_debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "gcc_13_release",
+            "displayName": "gcc-13-release",
+            "inherits": "gcc_13",
+            "binaryDir": "${sourceDir}/build_release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "clang",
+            "inherits": "base",
+            "hidden": true,
+            "description": "Using compilers: C = /usr/bin/clang, CXX = /usr/bin/clang++",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/clang",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                "CMAKE_LINKER_TYPE": "LLD"
             }
         },
         {
             "name": "clang_debug",
-            "displayName": "Clang Debug",
-            "description": "Using compilers: C = /usr/bin/clang, CXX = /usr/bin/clang++",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
-                "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true
-            }
+            "displayName": "clang-debug",
+            "inherits": [
+                "clang",
+                "debug"
+            ]
         },
         {
             "name": "clang_release",
-            "displayName": "Clang Release",
-            "description": "Using compilers: C = /usr/bin/clang, CXX = /usr/bin/clang++",
-            "binaryDir": "${sourceDir}/build/${presetName}",
+            "displayName": "clang-release",
+            "inherits": [
+                "clang",
+                "release"
+            ]
+        },
+        {
+            "name": "clang_18",
+            "inherits": "base",
+            "hidden": true,
+            "description": "Using compilers: C = /usr/lib/llvm18/bin/clang-18, CXX = /usr/lib/llvm18/bin/clang++-18",
             "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
-                "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": true
+                "CMAKE_C_COMPILER": "/usr/lib/llvm18/bin/clang",
+                "CMAKE_CXX_COMPILER": "/usr/lib/llvm18/bin/clang++",
+                "CMAKE_LINKER_TYPE": "LLD"
+            }
+        },
+        {
+            "name": "clang_18_debug",
+            "displayName": "clang-18-debug",
+            "inherits": "clang_18",
+            "binaryDir": "${sourceDir}/build_debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "clang_18_release",
+            "displayName": "clang-18-release",
+            "inherits": "clang_18",
+            "binaryDir": "${sourceDir}/build_release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
             }
         }
     ]

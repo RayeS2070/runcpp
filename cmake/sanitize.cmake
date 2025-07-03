@@ -1,14 +1,35 @@
 
 function(sanitize TARGET SSTR)
+    if(WIN32)
+        return()
+    endif()
+
     message(${TARGET} " must be sanitized with " ${SSTR})
     if (${SSTR} MATCHES "addr|address")
-        message("enable address")
+        message("enable address sanitize")
         if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-            set(SANITIZE_COMPILE_FLAGS ${SANITIZE_COMPILE_FLAGS} -fsanitize=address -static-libsan)
-            set(SANITIZE_LINK_FLAGS ${SANITIZE_LINK_FLAGS} -fsanitize=address -static-libsan)
+            target_compile_options(
+                ${TARGET}
+                PUBLIC
+                -fsanitize=address
+                -static-libsan
+            )
+            target_link_options(
+                ${TARGET}
+                PUBLIC
+                -fsanitize=address
+            )
         elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-            set(SANITIZE_COMPILE_FLAGS ${SANITIZE_COMPILE_FLAGS} -fsanitize=address)
-            set(SANITIZE_LINK_FLAGS ${SANITIZE_LINK_FLAGS} -fsanitize=address)
+            target_compile_options(
+                ${TARGET}
+                PUBLIC
+                -fsanitize=address
+            )
+            target_link_options(
+                ${TARGET}
+                PUBLIC
+                -fsanitize=address
+            )
         elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
             message("what is it?")
         elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -17,19 +38,35 @@ function(sanitize TARGET SSTR)
     endif()
 
     if (${SSTR} MATCHES "ub|undefined")
-        message("enable undefined")
+        message("enable undefined sanitize")
         if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-            set(SANITIZE_COMPILE_FLAGS ${SANITIZE_COMPILE_FLAGS} -fsanitize=undefined -static-libsan)
-            set(SANITIZE_LINK_FLAGS ${SANITIZE_LINK_FLAGS} -fsanitize=undefined -static-libsan)
+        target_compile_options(
+            ${TARGET}
+            PUBLIC
+            -fsanitize=undefined
+            -static-libsan
+        )
+        target_link_options(
+            ${TARGET}
+            PUBLIC
+            -fsanitize=undefined
+        )
         elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-            set(SANITIZE_COMPILE_FLAGS ${SANITIZE_COMPILE_FLAGS} -fsanitize=undefined)
-            set(SANITIZE_LINK_FLAGS ${SANITIZE_LINK_FLAGS} -fsanitize=undefined)
+            target_compile_options(
+                ${TARGET}
+                PUBLIC
+                -fsanitize=undefined
+            )
+            target_link_options(
+                ${TARGET}
+                PUBLIC
+                -fsanitize=undefined
+            )
         elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
             message("what is it?")
         elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
             message("go out!")
         endif()
     endif()
-    target_compile_options(${TARGET} PUBLIC ${SANITIZE_COMPILE_FLAGS})
-    target_link_options(${TARGET} PUBLIC ${SANITIZE_LINK_FLAGS})
+
 endfunction()
